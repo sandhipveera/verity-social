@@ -2,6 +2,7 @@ import { BrandThemeProvider, useBrand } from "./theme/BrandThemeProvider";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { BriefInput } from "./components/BriefInput";
+import { EpisodeList } from "./components/EpisodeList";
 import { Toaster } from "sonner";
 
 function Footer() {
@@ -49,6 +50,7 @@ function Shell() {
             <main>
                 <Hero />
                 <BriefInput />
+                <EpisodeList />
             </main>
             <Footer />
             <Toaster

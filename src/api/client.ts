@@ -6,7 +6,7 @@
 // Both endpoints fall through to the platform default on unknown
 // hostnames, so this client never receives 404 from a brand miss.
 
-import type { BrandCurrent, DomainCurrent } from "./types";
+import type { BrandCurrent, DomainCurrent, EpisodeSummary } from "./types";
 
 const API_BASE = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
 
@@ -38,4 +38,8 @@ export async function fetchBrandCurrent(host?: string): Promise<BrandCurrent> {
 export async function fetchDomainCurrent(host?: string): Promise<DomainCurrent> {
     const h = host ?? window.location.host;
     return getJson<DomainCurrent>("/api/domain/current", { host: h });
+}
+
+export async function fetchEpisodes(): Promise<EpisodeSummary[]> {
+    return getJson<EpisodeSummary[]>("/api/episodes");
 }
