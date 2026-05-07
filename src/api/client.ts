@@ -49,7 +49,9 @@ export async function fetchDomainCurrent(host?: string): Promise<DomainCurrent> 
 }
 
 export async function fetchEpisodes(): Promise<EpisodeSummary[]> {
-    return getJson<EpisodeSummary[]>("/api/episodes");
+    // verity-core returns { episodes: [...] }; unwrap to a flat array.
+    const wire = await getJson<{ episodes: EpisodeSummary[] }>("/api/episodes");
+    return wire.episodes ?? [];
 }
 
 // ============================================================
