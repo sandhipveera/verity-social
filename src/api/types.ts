@@ -99,3 +99,75 @@ export interface EpisodeSummary {
     createdAt: string;
     publishedAt: string | null;
 }
+
+// ============================================================
+// Audience-feedback closed loop (ADR-0047)
+//
+// Wire-types mirroring server/api/feedback.ts response shapes.
+// Kept in sync manually — verity-social doesn't share TS imports
+// across the repo boundary (per the agnostic contract from ADR-0046,
+// the contract IS the wire shape).
+// ============================================================
+
+export type FeedbackThemeCategory =
+    | "accepted"
+    | "topic_request"
+    | "criticism"
+    | "controversy"
+    | "style_note"
+    | "off_topic"
+    | "abuse";
+
+export type FeedbackSentiment = "positive" | "neutral" | "negative";
+
+export type FeedbackSourceChannel =
+    | "youtube_comment"
+    | "in_app_form"
+    | "twitter_reply"
+    | "reddit_comment"
+    | "linkedin_reaction"
+    | "tiktok_comment"
+    | "rss_ping"
+    | "manual";
+
+export interface FeedbackRow {
+    id: string;
+    sourceChannel: FeedbackSourceChannel;
+    authorLabel: string | null;
+    rawText: string;
+    receivedAt: string;
+}
+
+export interface FeedbackTheme {
+    id: string;
+    feedbackId: string;
+    category: FeedbackThemeCategory;
+    sentiment: FeedbackSentiment;
+    themeLabel: string;
+    themeDetail?: string | null;
+    requestedTopic?: string | null;
+    extractedAt: string;
+}
+
+export interface FeedbackListResponse {
+    feedback: FeedbackRow[];
+    themes: FeedbackTheme[];
+}
+
+export interface FeedbackAggregateResponse {
+    feedbackCount: number;
+    themeCount: number;
+    byCategory: Array<{ category: FeedbackThemeCategory; count: number }>;
+    topRequestedTopics: Array<{ topic: string; count: number }>;
+}
+
+export interface InheritFeedbackResponse {
+    audienceLessons: string;
+    inheritedThemeIds: string[];
+    summary: string;
+}
+
+export interface SubmitFeedbackResponse {
+    feedbackId: string;
+    themesInserted: number;
+}
